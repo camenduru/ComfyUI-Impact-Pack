@@ -1,7 +1,7 @@
 import nodes
 from totoro.k_diffusion import sampling as k_diffusion_sampling
 from totoro import samplers
-from totoro_extras import nodes_custom_sampler
+import nodes_custom_sampler
 import latent_preview
 import totoro
 import torch
@@ -9,7 +9,7 @@ import math
 
 
 try:
-    from totoro_extras.nodes_custom_sampler import Noise_EmptyNoise, Noise_RandomNoise
+    from nodes_custom_sampler import Noise_EmptyNoise, Noise_RandomNoise
 except:
     print(f"\n#############################################\n[Impact Pack] totoroUI is an outdated version.\n#############################################\n")
     raise Exception("[Impact Pack] totoroUI is an outdated version.")
