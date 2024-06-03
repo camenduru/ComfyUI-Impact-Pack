@@ -10,12 +10,12 @@ import piexif
 import zipfile
 import re
 
-import impact.wildcards
+import wildcards
 
-from impact.utils import *
-import impact.core as core
-from impact.core import SEG
-from impact.config import MAX_RESOLUTION, latent_letter_path
+from utils import *
+import core as core
+from core import SEG
+from config import MAX_RESOLUTION, latent_letter_path
 from PIL import Image, ImageOps
 import numpy as np
 import hashlib
@@ -24,7 +24,7 @@ import safetensors.torch
 from PIL.PngImagePlugin import PngInfo
 import totoro.model_management
 import base64
-import impact.wildcards as wildcards
+import wildcards as wildcards
 from . import hooks
 
 warnings.filterwarnings('ignore', category=UserWarning, message='TypedStorage is deprecated')
@@ -2078,7 +2078,7 @@ class ImpactWildcardProcessor:
 
     @staticmethod
     def process(**kwargs):
-        return impact.wildcards.process(**kwargs)
+        return wildcards.process(**kwargs)
 
     def doit(self, *args, **kwargs):
         populated_text = ImpactWildcardProcessor.process(text=kwargs['populated_text'], seed=kwargs['seed'])
@@ -2108,16 +2108,16 @@ class ImpactWildcardEncode:
 
     @staticmethod
     def process_with_loras(**kwargs):
-        return impact.wildcards.process_with_loras(**kwargs)
+        return wildcards.process_with_loras(**kwargs)
 
     @staticmethod
     def get_wildcard_list():
-        return impact.wildcards.get_wildcard_list()
+        return wildcards.get_wildcard_list()
 
     def doit(self, *args, **kwargs):
         populated = kwargs['populated_text']
         processed = []
-        model, clip, conditioning = impact.wildcards.process_with_loras(wildcard_opt=populated, model=kwargs['model'], clip=kwargs['clip'], seed=kwargs['seed'], processed=processed)
+        model, clip, conditioning = wildcards.process_with_loras(wildcard_opt=populated, model=kwargs['model'], clip=kwargs['clip'], seed=kwargs['seed'], processed=processed)
         return model, clip, conditioning, processed[0]
 
 

@@ -7,7 +7,7 @@ import torch
 from segment_anything import SamPredictor
 
 from totoro_extras.nodes_custom_sampler import Noise_RandomNoise
-from impact.utils import *
+from utils import *
 from collections import namedtuple
 import numpy as np
 from skimage.measure import label
@@ -16,7 +16,7 @@ import nodes
 import totoro_extras.nodes_upscale_model as model_upscale
 from server import PromptServer
 import totoro
-import impact.wildcards as wildcards
+import wildcards as wildcards
 import math
 import cv2
 import time
@@ -1021,7 +1021,7 @@ class ONNXDetector:
     def detect(self, image, threshold, dilation, crop_factor, drop_size=1, detailer_hook=None):
         drop_size = max(drop_size, 1)
         try:
-            import impact.onnx as onnx
+            import onnx as onnx
 
             h = image.shape[1]
             w = image.shape[2]

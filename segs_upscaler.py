@@ -1,4 +1,4 @@
-from impact.utils import *
+from utils import *
 from impact import impact_sampling
 from totoro import model_management
 from totoro.cli_args import args

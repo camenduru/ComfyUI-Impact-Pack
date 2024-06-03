@@ -1,4 +1,4 @@
-from impact.utils import any_typ, ByPassTypeTuple, make_3d_mask
+from utils import any_typ, ByPassTypeTuple, make_3d_mask
 import totoro_extras.nodes_mask
 from nodes import MAX_RESOLUTION
 import torch
@@ -189,7 +189,7 @@ class ImagePasteMasked:
         return (output,)
 
 
-from impact.utils import any_typ
+from utils import any_typ
 
 class ImpactLogger:
     @classmethod

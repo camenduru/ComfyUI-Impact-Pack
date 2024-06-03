@@ -1,13 +1,13 @@
 import os
 import sys
 
-import impact.impact_server
+import impact_server
 from nodes import MAX_RESOLUTION
 
-from impact.utils import *
+from utils import *
 from . import core
 from .core import SEG
-import impact.utils as utils
+import utils as utils
 from . import defs
 from . import segs_upscaler
 from totoro.cli_args import args
@@ -1406,7 +1406,7 @@ class SEGSPicker:
 
             cands.append(cropped_image)
 
-        impact.impact_server.segs_picker_map[unique_id] = cands
+        impact_server.segs_picker_map[unique_id] = cands
 
         # pass only selected
         pick_ids = set()

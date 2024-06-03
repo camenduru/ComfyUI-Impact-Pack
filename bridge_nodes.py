@@ -1,6 +1,6 @@
 import os
 from PIL import ImageOps
-from impact.utils import *
+from utils import *
 
 # NOTE: this should not be `from . import core`.
 # I don't know why but... 'from .' and 'from impact' refer to different core modules.

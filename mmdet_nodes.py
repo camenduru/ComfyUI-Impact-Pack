@@ -1,5 +1,5 @@
 import folder_paths
-from impact.core import *
+from core import *
 import os
 
 import mmcv

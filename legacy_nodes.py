@@ -1,9 +1,9 @@
 import folder_paths
 
-import impact.mmdet_nodes as mmdet_nodes
-from impact.utils import *
-from impact.core import SEG
-import impact.core as core
+import mmdet_nodes as mmdet_nodes
+from utils import *
+from core import SEG
+import core as core
 import nodes
 
 class NO_BBOX_MODEL:

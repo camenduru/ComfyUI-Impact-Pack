@@ -1,8 +1,8 @@
 from nodes import MAX_RESOLUTION
-from impact.utils import *
-import impact.core as core
-from impact.core import SEG
-from impact.segs_nodes import SEGSPaste
+from utils import *
+import core as core
+from core import SEG
+from segs_nodes import SEGSPaste
 
 
 class SEGSDetailerForAnimateDiff:

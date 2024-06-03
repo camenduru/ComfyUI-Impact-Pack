@@ -1,9 +1,9 @@
-import impact.core as core
-from impact.config import MAX_RESOLUTION
-import impact.segs_nodes as segs_nodes
-import impact.utils as utils
+import core as core
+from config import MAX_RESOLUTION
+import segs_nodes as segs_nodes
+import utils as utils
 import torch
-from impact.core import SEG
+from core import SEG
 
 
 class SAMDetectorCombined:

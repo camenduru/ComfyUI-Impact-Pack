@@ -1,5 +1,5 @@
 import folder_paths
-import impact.wildcards
+import wildcards
 
 class ToDetailerPipe:
     @classmethod

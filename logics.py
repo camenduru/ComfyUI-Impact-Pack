@@ -2,10 +2,10 @@ import sys
 import time
 
 import execution
-import impact.impact_server
+import impact_server
 from server import PromptServer
-from impact.utils import any_typ
-import impact.core as core
+from utils import any_typ
+import core as core
 import re
 import nodes
 
@@ -637,7 +637,7 @@ class ImpactControlBridge:
 
         for link in nodes[unique_id]['outputs'][0]['links']:
             node_id = str(links[link][2])
-            impact.utils.collect_non_reroute_nodes(nodes, links, next_nodes, node_id)
+            utils.collect_non_reroute_nodes(nodes, links, next_nodes, node_id)
 
         return next_nodes
 
@@ -655,7 +655,7 @@ class ImpactControlBridge:
             node_id = str(links[link][2])
 
             next_nodes = []
-            impact.utils.collect_non_reroute_nodes(workflow_nodes, links, next_nodes, node_id)
+            utils.collect_non_reroute_nodes(workflow_nodes, links, next_nodes, node_id)
 
             for next_node_id in next_nodes:
                 node_mode = workflow_nodes[next_node_id]['mode']

@@ -1,10 +1,10 @@
 import math
-import impact.core as core
+import core as core
 from totoro_extras.nodes_custom_sampler import Noise_RandomNoise
-from impact.utils import *
+from utils import *
 from nodes import MAX_RESOLUTION
 import nodes
-from impact.impact_sampling import KSamplerWrapper, KSamplerAdvancedWrapper, separated_sample, impact_sample
+from impact_sampling import KSamplerWrapper, KSamplerAdvancedWrapper, separated_sample, impact_sample
 
 
 class TiledKSamplerProvider:
