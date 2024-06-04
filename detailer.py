@@ -1,5 +1,5 @@
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter, ImageEnhance
 from ultralytics import YOLO
 from collections import namedtuple
 import cv2
@@ -629,6 +629,142 @@ def tensor_convert_rgb(image, prefer_copy=True):
 
     # NOTE: Same error message as in PIL, for easier googling :P
     raise ValueError(f"illegal conversion (channels: {n_channel} -> 3)")
+
+#from https://github.com/WASasquatch/was-node-suite-comfyui/blob/e1cfb7d2279c631bdd2f09e5302f32fbe04b2efc/WAS_Node_Suite.py#L2756
+def image_filters(image, brightness, contrast, saturation, sharpness, blur, gaussian_blur, edge_enhance, detail_enhance):
+
+    tensors = []
+    if len(image) > 1:
+        for img in image:
+
+            pil_image = None
+
+            # Apply NP Adjustments
+            if brightness > 0.0 or brightness < 0.0:
+                # Apply brightness
+                img = np.clip(img + brightness, 0.0, 1.0)
+
+            if contrast > 1.0 or contrast < 1.0:
+                # Apply contrast
+                img = np.clip(img * contrast, 0.0, 1.0)
+
+            # Apply PIL Adjustments
+            if saturation > 1.0 or saturation < 1.0:
+                # PIL Image
+                pil_image = tensor2pil(img)
+                # Apply saturation
+                pil_image = ImageEnhance.Color(pil_image).enhance(saturation)
+
+            if sharpness > 1.0 or sharpness < 1.0:
+                # Assign or create PIL Image
+                pil_image = pil_image if pil_image else tensor2pil(img)
+                # Apply sharpness
+                pil_image = ImageEnhance.Sharpness(pil_image).enhance(sharpness)
+
+            if blur > 0:
+                # Assign or create PIL Image
+                pil_image = pil_image if pil_image else tensor2pil(img)
+                # Apply blur
+                for _ in range(blur):
+                    pil_image = pil_image.filter(ImageFilter.BLUR)
+
+            if gaussian_blur > 0.0:
+                # Assign or create PIL Image
+                pil_image = pil_image if pil_image else tensor2pil(img)
+                # Apply Gaussian blur
+                pil_image = pil_image.filter(
+                    ImageFilter.GaussianBlur(radius=gaussian_blur))
+
+            if edge_enhance > 0.0:
+                # Assign or create PIL Image
+                pil_image = pil_image if pil_image else tensor2pil(img)
+                # Edge Enhancement
+                edge_enhanced_img = pil_image.filter(ImageFilter.EDGE_ENHANCE_MORE)
+                # Blend Mask
+                blend_mask = Image.new(
+                    mode="L", size=pil_image.size, color=(round(edge_enhance * 255)))
+                # Composite Original and Enhanced Version
+                pil_image = Image.composite(
+                    edge_enhanced_img, pil_image, blend_mask)
+                # Clean-up
+                del blend_mask, edge_enhanced_img
+
+            if detail_enhance == "true":
+                pil_image = pil_image if pil_image else tensor2pil(img)
+                pil_image = pil_image.filter(ImageFilter.DETAIL)
+
+            # Output image
+            out_image = (pil2tensor(pil_image) if pil_image else img)
+
+            tensors.append(out_image)
+
+        tensors = torch.cat(tensors, dim=0)
+
+    else:
+
+        pil_image = None
+        img = image
+
+        # Apply NP Adjustments
+        if brightness > 0.0 or brightness < 0.0:
+            # Apply brightness
+            img = np.clip(img + brightness, 0.0, 1.0)
+
+        if contrast > 1.0 or contrast < 1.0:
+            # Apply contrast
+            img = np.clip(img * contrast, 0.0, 1.0)
+
+        # Apply PIL Adjustments
+        if saturation > 1.0 or saturation < 1.0:
+            # PIL Image
+            pil_image = tensor2pil(img)
+            # Apply saturation
+            pil_image = ImageEnhance.Color(pil_image).enhance(saturation)
+
+        if sharpness > 1.0 or sharpness < 1.0:
+            # Assign or create PIL Image
+            pil_image = pil_image if pil_image else tensor2pil(img)
+            # Apply sharpness
+            pil_image = ImageEnhance.Sharpness(pil_image).enhance(sharpness)
+
+        if blur > 0:
+            # Assign or create PIL Image
+            pil_image = pil_image if pil_image else tensor2pil(img)
+            # Apply blur
+            for _ in range(blur):
+                pil_image = pil_image.filter(ImageFilter.BLUR)
+
+        if gaussian_blur > 0.0:
+            # Assign or create PIL Image
+            pil_image = pil_image if pil_image else tensor2pil(img)
+            # Apply Gaussian blur
+            pil_image = pil_image.filter(
+                ImageFilter.GaussianBlur(radius=gaussian_blur))
+
+        if edge_enhance > 0.0:
+            # Assign or create PIL Image
+            pil_image = pil_image if pil_image else tensor2pil(img)
+            # Edge Enhancement
+            edge_enhanced_img = pil_image.filter(ImageFilter.EDGE_ENHANCE_MORE)
+            # Blend Mask
+            blend_mask = Image.new(
+                mode="L", size=pil_image.size, color=(round(edge_enhance * 255)))
+            # Composite Original and Enhanced Version
+            pil_image = Image.composite(
+                edge_enhanced_img, pil_image, blend_mask)
+            # Clean-up
+            del blend_mask, edge_enhanced_img
+
+        if detail_enhance == "true":
+            pil_image = pil_image if pil_image else tensor2pil(img)
+            pil_image = pil_image.filter(ImageFilter.DETAIL)
+
+        # Output image
+        out_image = (pil2tensor(pil_image) if pil_image else img)
+
+        tensors = out_image
+
+    return (tensors, )
 
 class DetailerForEach:
     @staticmethod
